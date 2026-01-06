@@ -1,13 +1,7 @@
-
-export default function FeedbackForm() {
-  function handleClick() {
-   const name = (prompt('What is your name?'));
-    alert(`Hello, ${name}!`);
-  }
-
+import Clock from "./Clock";
+export default function App ({time}) {
   return (
-    <button onClick={handleClick}>
-      Greet
-    </button>
+    
+    <Clock time={new Date()} />
   );
 }
