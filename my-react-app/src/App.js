@@ -1,14 +1,28 @@
-export default function Bio() {
+function Item({ name, isPacked }) {
+  if (isPacked) {
+    return null;
+  }
+  return <li className="item">{name}</li>;
+}
+
+export default function PackingList() {
   return (
-    <>
-    <div className="intro">
-      <h1>Welcome to my website!</h1>
-    </div>
-    <p className="summary">
-      You can find my thoughts here.
-      <br></br>
-      <b>And <i>pictures</i></b> of scientists!
-    </p>
-    </>
+    <section>
+      <h1>Sally Ride's Packing List</h1>
+      <ul>
+        <Item
+          isPacked={true}
+          name="Space suit"
+        />
+        <Item
+          isPacked={false}
+          name="Helmet with a golden leaf"
+        />
+        <Item
+          isPacked={false}
+          name="Photo of Tam"
+        />
+      </ul>
+    </section>
   );
 }
