@@ -1,8 +1,7 @@
-export function getImageUrl(person, size = 's') {
+export function getImageUrl(person) {
   return (
     'https://react.dev/images/docs/scientists/' +
     person.imageId +
-    size +
-    '.jpg'
+    's.jpg'
   );
 }
