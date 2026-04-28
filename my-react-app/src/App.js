@@ -1,8 +1,26 @@
 import { people } from "./data";
 import { getImageUrl } from "./utils";
-
+function ListSection({tittle, people}) {
+  return (
+    <>
+     <h2>{tittle}</h2>
+      <ul>{people.map(person =>
+        <li key={person.id}>
+        <img 
+        src={getImageUrl(person)}
+        alt={person.name} />
+        <p>
+          <b>{person.name}:</b>
+          {"" + person.profession + "" } 
+          known for {person.accomplishment}
+        </p>
+        </li>
+      )}</ul>
+    </>
+  );
+}
 export default function List() {
-  const chemist = people.filter(person => 
+  const chemists = people.filter(person => 
     person.profession === 'chemist'
   );
   const everyOneElse = people.filter(person => 
@@ -11,32 +29,14 @@ export default function List() {
   return (
     <article>
       <h1>scientists</h1>
-      <h2>Chemists</h2>
-      <ul>{chemist.map(person =>
-        <li key={person.id}>
-        <img 
-        src={getImageUrl(person)}
-        alt={person.name} />
-        <p>
-          <b>{person.name}:</b>
-          {"" + person.profession + "" } 
-          known for {person.accomplishment}
-        </p>
-        </li>
-      )}</ul>
-      <h2>everyOneElse</h2>
-      <ul>{everyOneElse.map(person =>
-        <li key={person.id}>
-        <img 
-        src={getImageUrl(person)}
-        alt={person.name} />
-        <p>
-          <b>{person.name}:</b>
-          {"" + person.profession + "" } 
-          known for {person.accomplishment}
-        </p>
-        </li>
-      )}</ul>
+      <ListSection 
+      tittle= 'chemists'
+      people={chemists}
+      />
+      <ListSection 
+      tittle= 'everyOneElse'
+      people={everyOneElse}
+      />
     </article>
   )
 }
