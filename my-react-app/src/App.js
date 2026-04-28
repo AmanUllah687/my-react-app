@@ -1,11 +1,19 @@
-function Cup({guest}) {
-  return <h2>Tea Cup for guest #{guest}</h2>
-}
+export default function StoryTray({stories}) {
+  const storiesToDisplay = stories.slice();
+  storiesToDisplay.push({
+    id: 'create',
+    label: 'Create Story'
+  });
 
-export default function TeaSet() {
-  const cups = [];
-  for(let i=1; i<=12;i++) {
-    cups.push(<Cup key={i} guest={i} />);
-  }
-  return cups;
+  return (
+    <ul>
+      {stories.map(story => (
+        <li key={story.id}>
+          {story.label}
+        </li>
+      ))}
+    </ul>
+   
+  )
+
 }
