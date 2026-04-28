@@ -1,5 +1,15 @@
 import { people } from "./data";
 import { getImageUrl } from "./utils";
+let chemist = [];
+let everyOneElse = [];
+people.forEach(person => {
+  if(person.profession === 'chemist') {
+    chemist.push(person);
+
+  } else {
+    everyOneElse.push(person);
+  }
+});
 function ListSection({tittle, people}) {
   return (
     <>
@@ -20,18 +30,13 @@ function ListSection({tittle, people}) {
   );
 }
 export default function List() {
-  const chemists = people.filter(person => 
-    person.profession === 'chemist'
-  );
-  const everyOneElse = people.filter(person => 
-    person.profession !== 'chemist'
-  );
+
   return (
     <article>
       <h1>scientists</h1>
       <ListSection 
       tittle= 'chemists'
-      people={chemists}
+      people={chemist}
       />
       <ListSection 
       tittle= 'everyOneElse'
