@@ -1,19 +1,14 @@
-export default function StoryTray({stories}) {
-  const storiesToDisplay = stories.slice();
-  storiesToDisplay.push({
-    id: 'create',
-    label: 'Create Story'
-  });
+import FancyText from "./FancyText";
+import InspirationGenerator from "./InspirationGenerator";
+import Copyright from "./Copyright";
 
+export default function App() {
   return (
-    <ul>
-      {stories.map(story => (
-        <li key={story.id}>
-          {story.label}
-        </li>
-      ))}
-    </ul>
-   
+    <>
+    <FancyText title text='Get Inspired App' />
+    <InspirationGenerator>
+      <Copyright year={2004}/>
+    </InspirationGenerator>
+    </>
   )
-
 }
