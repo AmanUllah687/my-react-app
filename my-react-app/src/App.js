@@ -1,14 +1,20 @@
-import FancyText from './FancyText';
-import InspirationGenerator from './InspirationGenerator';
-import Copyright from './Copyright';
+import { useState } from "react";
 
-export default function App() {
+function RenderFunctionComponents() {
+  const [firstName, setFirstName] = useState("Rudi");
+  const [lastName, setLastName] = useState("Yardley");
+
   return (
-    <>
-      <FancyText title text="Get Inspired App" />
-      <InspirationGenerator>
-        <Copyright year={2004} />
-      </InspirationGenerator>
-    </>
+    <div>
+      <h1>
+        {firstName} {lastName}
+      </h1>
+
+      <button onClick={() => setFirstName("Fred")}>
+        Fred
+      </button>
+    </div>
   );
 }
+
+export default RenderFunctionComponents;
