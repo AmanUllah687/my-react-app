@@ -6,37 +6,25 @@ import { useState } from "react";
     email: 'bhepworth@sculpture.com' 
     })
 
- function handlefirstNameChange(e) {
+ function handleChange(e) {
     setPerson({
       ...person,
-      firstName: e.target.value
-    });
- }
- function handlelastNameChange(e) {
-    setPerson({
-      ...person,
-      lastName: e.target.value
-    });
- }
- function handleEmailChange(e) {
-   setPerson({
-      ...person,
-      email: e.target.value
+      [e.target.name]: e.target.value
     });
  }
  return(
     <>
     <label>
         First Name:
-        <input value={person.firstName} onChange={handlefirstNameChange} />
+        <input name="firstName" value={person.firstName} onChange={handleChange} />
     </label>
     <label>
         Last Name:
-        <input value={person.lastName} onChange={handlelastNameChange} />
+        <input name= "lastName" value={person.lastName} onChange={handleChange} />
     </label>
     <label>
         E-mail:
-        <input value={person.email} onChange={handleEmailChange} />
+        <input name="email" value={person.email} onChange={handleChange} />
     </label>
     <p>
         {person.firstName}{''}
