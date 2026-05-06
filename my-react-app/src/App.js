@@ -1,74 +1,35 @@
-import { getFinalState } from './processQueue.js';
-
-function increment(n) {
-  return n + 1;
-}
-increment.toString = () => 'n => n+1';
-
-export default function App() {
-  return (
+import { useState } from "react";
+export default function MovingDot() {
+    const[position, setPosition]  = useState({
+        x: 0,
+        y: 0
+    })
+    return (
     <>
-      <TestCase
-        baseState={0}
-        queue={[1, 1, 1]}
-        expected={1}
-      />
-      <hr />
-      <TestCase
-        baseState={0}
-        queue={[
-          increment,
-          increment,
-          increment
-        ]}
-        expected={3}
-      />
-      <hr />
-      <TestCase
-        baseState={0}
-        queue={[
-          5,
-          increment,
-        ]}
-        expected={6}
-      />
-      <hr />
-      <TestCase
-        baseState={0}
-        queue={[
-          5,
-          increment,
-          42,
-        ]}
-        expected={42}
-      />
-    </>
-  );
-}
-
-function TestCase({
-  baseState,
-  queue,
-  expected
-}) {
-  const actual = getFinalState(baseState, queue);
-  return (
-    <>
-      <p>Base state: <b>{baseState}</b></p>
-      <p>Queue: <b>[{queue.join(', ')}]</b></p>
-      <p>Expected result: <b>{expected}</b></p>
-      <p style={{
-        color: actual === expected ?
-          'green' :
-          'red'
-      }}>
-        Your result: <b>{actual}</b>
-        {' '}
-        ({actual === expected ?
-          'correct' :
-          'wrong'
-        })
-      </p>
-    </>
-  );
-}
+    <div onPointerMove={e => {
+    const nextPosition = {};
+nextPosition.x = e.clientX;
+nextPosition.y = e.clientY;
+setPosition(nextPosition);
+    }}
+     style= {{
+        position: 'relative',
+        width: '100vw',
+        height: '100vh'
+    }}
+    > 
+    <div
+    style= {{
+         position: 'absolute',
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        transform: `translate(${position.x}px, ${position.y}px)`,
+        left: 10,
+        top: 10,
+        width: 20,
+        height: 20,
+    }}
+  />
+    </div>
+    </> 
+);}
