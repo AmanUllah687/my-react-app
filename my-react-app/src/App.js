@@ -1,63 +1,24 @@
-import { useImmer } from 'use-immer'
- export default function Form() {
-    const[person, updatePerson] = useImmer({
-    name: 'Niki de Saint Phalle',
-    artwork: {
-      title: 'Blue Nana',
-      city: 'Hamburg',
-      image: 'https://react.dev/images/docs/scientists/Sd1AgUOm.jpg',
-    } 
-    })
-
- function handleNameChange(e) {
-    updatePerson(draft => {
-      draft.name = e.target.value
-    });
+import { use, useState } from 'react';
+let nextId = 0;
+ export default function List()  {
+    const[name, setName] = useState('');
+    const[artists, setArtists] = useState([]);
+    return (
+        <>
+        <h1>Inspiring Sculputures: </h1>
+        <input value={name} 
+        onChange={e => setName(e.target.value)} 
+        />
+        <button onClick={() => {
+            artists.push({
+                id: nextId++,
+                name: name,
+            })}}>Add</button>
+            <ul>
+                {artists.map(artist => (
+                    <li key={artist.id}>{artist.name}</li>
+                ))}
+            </ul>
+        </>
+    );
  }
- function handleTitleChange(e) {
-    updatePerson(draft => {
-      draft.artwork.title = e.target.value
-    });
- }
- function handleCityChange(e) {
-   updatePerson(draft => {
-      draft.artwork.city = e.target.value
-    });
-  }
- function handleImageChange(e) {
-    updatePerson(draft => {
-      draft.artwork.image = e.target.value
-    });
- }
- return(
-    <>
-    <label>
-        Name:
-        <input  value={person.name} onChange={handleNameChange} />
-    </label>
-    <label>
-        Title:
-        <input  value={person.artwork.title} onChange={handleTitleChange} />
-    </label>
-    <label>
-        city:
-        <input  value={person.artwork.city} onChange={handleCityChange} />
-    </label>
-    <label>
-        Imaage:
-        <input  value={person.artwork.image} onChange={handleImageChange} />
-    </label>
-    <p>
-        <i>{person.artwork.title}</i>
-        {'by'}
-        {person.name}
-        <br />
-        (located in {person.artwork.city})
-    </p>
-        <img
-        src={person.artwork.image}
-        alt={person.artwork.title}
-         />
-    </>
- )
-}
