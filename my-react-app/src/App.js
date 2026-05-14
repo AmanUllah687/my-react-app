@@ -1,60 +1,38 @@
 import { useState } from "react";
 
-export default function Form() {
-    const[answer, setAnswer] = useState('');
-    const[error, setError] = useState(null);
-    const[status, setstatus] = useState('typing');
+export default function Form () {
+    const[firstName, setFirstName] = useState('');
+    const[lastName, setLastName] = useState('');
+    const[fullName, setFullName] = useState('');
 
-    if(status === 'success') {
-        return <h1>That's Right!</h1>
+    function handleFirstNameChange(e) {
+        setFirstName(e.target.value);
+        setFullName(e.target.value + '' + lastName);
     }
-    async function handleSubmit(e) {
-        e.preventDefault();
-        setstatus('submitting');
-        try{
-            await submitForm(answer);
-            setstatus('success');  
-        } catch (err) {
-            setstatus('typing');
-            setError(err);
-        }
-    }
-    function handleTextareaChange(e) {
-        setAnswer(e.target.value);
+    function hanleLastNameChange(e) {
+        setLastName(e.target.value);
+        setFullName(firstName + '' + e.target.value);
     }
     return (
         <>
-        <h2>City Quiz</h2>
-        <p>In Which city there is a billboard that turn Water into Electricity?</p>
-        <form onSubmit={handleSubmit}>
-            <textarea
-            value={answer}
-            onChange={handleTextareaChange}
-            disabled={status === 'submitting'}
-             />
-            <br/>
-            <button disabled= {answer.length === 0 || answer === 'submitting'}>
-                Submit
-                </button>
-                {error !== null && 
-                <p className="Error">
-                    {error.message}
-                    </p>
-                    }
-        </form>
+        <h2>Lets Check You in!</h2>
+        <label>
+            First Name: {''}
+            <input
+            value={firstName}
+            onChange={handleFirstNameChange}
+            />
+        </label>
+         <label>
+            Last Name: {''}
+            <input
+            value={lastName}
+            onChange={hanleLastNameChange}
+            />
+        </label>
+        <p>
+            Your Ticket Will be issued to: <b>{fullName}</b>
+        </p>
         </>
     );
-}
-
-function submitForm(answer) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-        let shouldError = answer.toLowerCase() !== 'lima'
-        if(shouldError) {
-            reject(new Error('Good Gues But Wrong Answer. Try Again!'));
-        } else {
-            resolve();
-        }
-    }, 1500)
-    })
 }
