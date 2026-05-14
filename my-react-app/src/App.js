@@ -1,36 +1,22 @@
-import { useState } from "react";
+import { useState } from 'react';
+import Chat from './Chat.js';
+import ContactList from './ContactList.js';
 
-export default function Accordion() {
-    const[activeIndex, setActiveIndex] = useState(0);
+export default function Messanger() {
+    const[to, setTo] = useState([contacts[0]]);
     return(
-        <>
-        <h2>Almatzy, kazakhstan</h2>
-        <Panel
-        title='About'
-        isActive={activeIndex === 0}
-        onShow={() => setActiveIndex(0)}>
-              With a population of about 2 million, Almaty is Kazakhstan's largest city. From 1929 to 1997, it was its capital city.
-        </Panel>
-        <Panel
-        title='Esmatology'
-        isActive={activeIndex === 1}
-        onShow={() => setActiveIndex(1)}>
-             The name comes from <span lang="kk-KZ">алма</span>, the Kazakh word for "apple" and is often translated as "full of apples". In fact, the region surrounding Almaty is thought to be the ancestral home of the apple, and the wild <i lang="la">Malus sieversii</i> is considered a likely candidate for the ancestor of the modern domestic apple.
-
-        </Panel>
-        </>
+        <div>
+            <ContactList
+            contacts={contacts}
+            selectedContact={to} 
+            onSelect={contact => setTo(contact)}
+            />
+            <Chat key={to.email} contact={to} />
+        </div>
     );
 }
-function Panel({
-    title,
-    children,
-    isActive,
-    onShow
-}) {
-    return(
-        <section className="panel">
-            <h3>{title}</h3>
-            {isActive ? (<p>{children}</p>) : (<button onClick={onShow}>Show</button>)}
-        </section>
-    );
-}
+const contacts = [
+  { name: 'Taylor', email: 'taylor@mail.com' },
+  { name: 'Alice', email: 'alice@mail.com' },
+  { name: 'Bob', email: 'bob@mail.com' }
+];
