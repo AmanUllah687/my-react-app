@@ -1,65 +1,60 @@
-import { useImmer } from "use-immer";
-let  nextId = 3;
-const initialList = [
-  { id: 0, title: 'Big Bellies', seen: false },
-  { id: 1, title: 'Lunar Landscape', seen: false },
-  { id: 2, title: 'Terracotta Army', seen: true },
-];
- export default function BucketList () {
-    const[myList, updateMyList] = useImmer(initialList);
-    const[yourList, updateYourList] = useImmer(initialList);
-    function handleToggleMyList (id, nextSeen) {
-        updateMyList(draft=> {
-            const artwork = draft.find(a => 
-                a.id === id
-            );
-            artwork.seen = nextSeen;
-        });    
+import { useState } from "react";
+
+export default function Form() {
+    const[answer, setAnswer] = useState('');
+    const[error, setError] = useState(null);
+    const[status, setstatus] = useState('typing');
+
+    if(status === 'success') {
+        return <h1>That's Right!</h1>
     }
-     function handleToggleYourList (artworkId, nextSeen) {
-        updateYourList(draft=> {
-            const artwork = draft.find(a => 
-                a.id === artworkId
-            );
-            artwork.seen = nextSeen;
-        });    
+    async function handleSubmit(e) {
+        e.preventDefault();
+        setstatus('submitting');
+        try{
+            await submitForm(answer);
+            setstatus('success');  
+        } catch (err) {
+            setstatus('typing');
+            setError(err);
+        }
+    }
+    function handleTextareaChange(e) {
+        setAnswer(e.target.value);
     }
     return (
         <>
-        <h1>My Art Bucket List</h1>
-        <h2>MY list of Art to see:</h2>
-        <ItemList 
-        artworks={myList}
-        onToggle={handleToggleMyList} />
-        <h2>Your List of art to see:</h2>
-        <ItemList
-        artworks={yourList}
-        onToggle={handleToggleYourList}  />
+        <h2>City Quiz</h2>
+        <p>In Which city there is a billboard that turn Water into Electricity?</p>
+        <form onSubmit={handleSubmit}>
+            <textarea
+            value={answer}
+            onChange={handleTextareaChange}
+            disabled={status === 'submitting'}
+             />
+            <br/>
+            <button disabled= {answer.length === 0 || answer === 'submitting'}>
+                Submit
+                </button>
+                {error !== null && 
+                <p className="Error">
+                    {error.message}
+                    </p>
+                    }
+        </form>
         </>
     );
- } 
- function ItemList({artworks, onToggle}) {
-    return ( 
-        <ul>
-            {artworks.map(artwork => (
-                <li key={artwork.id}>
-                    <label>
-                        <input 
-                        type="checkbox"
-                        checked={artwork.seen}
-                        onChange={e => {
-                            onToggle(
-                                artwork.id,
-                                e.target.checked
+}
 
-                            );
-                        }}
-                        />
-                        {artwork.title}
-                    </label>
-
-                </li>
-            ))}
-        </ul>
-    );
- }
+function submitForm(answer) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+        let shouldError = answer.toLowerCase() !== 'lima'
+        if(shouldError) {
+            reject(new Error('Good Gues But Wrong Answer. Try Again!'));
+        } else {
+            resolve();
+        }
+    }, 1500)
+    })
+}
