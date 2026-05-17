@@ -1,13 +1,14 @@
-import AddTask from './AddTask.js';
-import TaskList from './TaskList.js';
-import { TasksProvider } from './TasksContext.js';
+import { useRef } from "react";
 
-export default function TaskApp() {
-    return (
-        <TasksProvider>
-            <h1>Day off in Kyoto</h1>
-            <AddTask />
-            <TaskList/>
-        </TasksProvider>
-    )
+export default function Counter() {
+    let ref = useRef(0);
+    function handleClick() {
+        ref.current = ref.current + 1;
+        alert('You Clicked' +  ref.current +  'Times!.');
+    }
+    return(
+        <button onClick={handleClick}>
+            Click me!
+        </button>
+    );
 }
