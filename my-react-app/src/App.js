@@ -1,33 +1,66 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
+import  './App.css';
 
-export default function StopWatch() {
-    const[starTime, setStartTime] = useState(null);
-    const[now, setNow] = useState(null);
-    const intervalRef = useRef(null);
-    function handleStart() {
-        setStartTime(Date.now());
-        setNow(Date.now());
-        clearInterval(intervalRef.current)
-       intervalRef.current = setInterval(() => {
-        setNow(Date.now)},10);
-    }
-    function handleStop() {
-        clearInterval(intervalRef.current);
-    }
-    let secondPassed = 0;
-    if(starTime != null && now != null) {
-        secondPassed = (now - starTime)/ 1000;
+export default function CatFriends() {
+    const firstCatRef = useRef(null);
+    const secondCatRef = useRef(null);
+    const thirdCatRef = useRef(null);
+    function handleScrollToFirstCat() {
+        firstCatRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
 
+        });
     }
-    return (
+     function handleScrollToSecondCat() {
+        secondCatRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+
+        });
+    }
+     function handleScrollToThirdCat() {
+        thirdCatRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+
+        });
+    }
+    return(
         <>
-        <h1>Time Passed: {secondPassed.toFixed(3)}</h1>
-        <button onClick={handleStart}>
-            Start
-        </button>
-        <button onClick={handleStop}>
-            Stop
-        </button>
+        <nav>
+            <button onClick={handleScrollToFirstCat}>Neo</button>
+            <button onClick={handleScrollToSecondCat}>Millie</button>
+            <button onClick={handleScrollToThirdCat}>Bella</button>
+        </nav>
+        <div>
+            <ul>
+                <li>
+                    <img
+              src="https://placecats.com/neo/300/200"
+              alt="Neo"
+              ref={firstCatRef}
+            />
+                </li>
+                <li>
+                    <img
+              src="https://placecats.com/millie/200/200"
+              alt="Millie"
+              ref={secondCatRef}
+            />
+                </li>
+                <li>
+                    <img
+              src="https://placecats.com/bella/199/200"
+              alt="Bella"
+              ref={thirdCatRef}
+            />
+                </li>
+            </ul>
+        </div>
         </>
     );
 }
