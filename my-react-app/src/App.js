@@ -1,6 +1,12 @@
-import { useRef } from "react";
+import { useRef, useImperativeHandle } from "react";
  function MyInput({ref}) {
-    return <input ref={ref} />
+    const realInputRef = useRef(null);
+    useImperativeHandle(ref, () =>({
+        focus() {
+            realInputRef.current.focus();
+        }
+    }))
+    return <input ref={realInputRef} />
  }
  export default function Form() {
     const inputRef = useRef(null);
