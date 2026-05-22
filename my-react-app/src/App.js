@@ -1,77 +1,28 @@
-import { useState, useRef } from "react";
-import { flushSync } from 'react-dom';
-import './App.css'
+import { useState, useRef, useEffect } from "react";
 
-export default function CatFriends() {
-    const selectedRef = useRef(null);
-    const[index, setIndex] = useState(0);
+function VideoPlayer({src, isPlaying}) {
+    const ref = useRef(null);
+    useEffect(() => {
+    if(isPlaying) {
+        ref.current.play();
+    } else  {
+        ref.current.pause()
+}
+})
+ return(
+    <video ref={ref} src={src} loop playsInline />
+ );
+}
+export default function App() {
+    const[isPlaying, setIsPlaying] = useState(false);
     return(
         <>
-        <nav>
-            <button onClick={() => {
-                flushSync(() => {
-                    if(index < catList.length - 1) {
-                        setIndex(index + 1);
-                    } else{
-                        setIndex(0)
-                    }
-                });
-                selectedRef.current.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'nearest',
-                    inline: 'center'
-               });
-            }}>
-                Next
-            </button>
-        </nav>
-        <div>
-            <ul>
-                {catList.map((cat, i) => (
-                    <li key={cat.id}
-                         ref={index === i ?
-                         selectedRef :
-                         null}
-                    >
-                        <img
-                className={
-                  index === i ?
-                    'active'
-                    : ''
-                }
-                src={cat.imageUrl}
-                alt={'Cat #' + cat.id}
-              />
-                    </li>
-
-                ))}
-            </ul>
-        </div>
+        <button onClick={() => setIsPlaying(!isPlaying)}>
+            {isPlaying ? 'pause' : 'play'}
+        </button>
+        <VideoPlayer isPlaying={isPlaying}
+         src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4"
+         />
         </>
     );
-}
-const catCount = 10;
-const catList = new Array(catCount);
-for(let i=0; i< catCount; i++) {
-    const bucket = Math.floor(Math.random() + catCount) % 2;
-    let imageUrl = '';
-    switch(bucket) {
-        case 0: {
-            imageUrl = "https://placecats.com/neo/250/200";
-            break;
-        }
-        case 1: {
-      imageUrl = "https://placecats.com/millie/250/200";
-      break;
-    }
-    case 2:
-    default: {
-      imageUrl = "https://placecats.com/bella/250/200";
-      break;
-    }
-    }
-    catList[i] = {
-        id: i,
-        imageUrl
-    };
 }
