@@ -1,41 +1,32 @@
-import { useState, useEffect} from "react";
-function Playground() {
-    const[text, setText] = useState('a');
-
-    useEffect(() => {
-        function onTimeout() {
-            console.log('⏰ ' + text);
+import { useState, useEffect } from "react";
+import { fetchBio } from './api.js';
+ 
+export default function Page() {
+    const[person, setPerson] = useState('Alice');
+    const[bio, setBio] = useState(null);
+     useEffect(() => {
+        let ignore = false;
+        setBio(null);
+        fetchBio(person).then(result => {
+            if(!ignore) {
+                setBio(result);
+            }
+        });
+        return () => {
+            ignore = true;
         }
-        console.log('🔵 Schedule "' + text + '" log');
-        const timeoutId = setTimeout(onTimeout, 3000);
-        
-       // return () => {
-         //   console.log('🟡 Cancel "' + text + '" log');
-           // clearTimeout(timeoutId);
-        //}
-    }, [text]);
-    return(
+     }, [person]);
+     return(
         <>
-        <label>
-            What to log:{' '}
-            <input 
-            value={text}
-            onChange={e => setText(e.target.value)}
-            />
-        </label>
-        <h1>{text}</h1>
+        <select value={person} onChange={e => setPerson(e.target.value)}>
+            <option value="Alice">Alice</option>
+            <option value="Bob">Bob</option>
+            <option value="Taylor">Taylor</option>
+        </select>
+        <hr />
+        <p>
+            <i>{bio ?? 'Loading...'}</i>
+        </p>
         </>
-    );
-}
-export default function App() {
-    const[show, setShow] = useState(false);
-    return(
-        <>
-        <button onClick={() => setShow(!show)}>
-            {show ? 'Unmount' : 'Mount'} the component
-        </button>
-        { show && <hr />}
-        {show && <Playground />}
-        </>
-    )
+     ); 
 }
