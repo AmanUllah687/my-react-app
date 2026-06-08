@@ -1,43 +1,36 @@
-import { useState} from "react";
-import { initialTodos, createTodo, getVisibleTodos } from "./todos.js";
-export default function TodoList() {
-    const[todos, setTodos] = useState(initialTodos);
-    const[showActive, setShowActive] = useState(false);
-    const visibleTodos =  getVisibleTodos(todos, showActive);
-    return(
+import { useState , useEffect} from "react";
+import { createConnection} from "./Chat.js";
+
+const serverUrl = 'https://localhost:1234';
+ function ChatRoom({roomId}) {
+    useEffect(() => {
+        const connection = createConnection(serverUrl, roomId);
+        connection.connect();
+        return () => connection.disconnect();
+
+    }, [roomId]);
+    return <h1>Welcome to the {roomId} Room!</h1>
+}
+export default function App() {
+    const[roodId, setRoomId] = useState('general');
+    const[show, setShow] = useState(false);
+    return (
         <>
         <label>
-            <input
-            type="checkbox"
-            checked={showActive}
-            onChange={e => setShowActive(e.target.checked)}
-            />
-            Show only active todos
+            choose the ChatRoom:{''}
+            <select 
+            value={roodId}
+            onChange={e => setRoomId(e.target.value)}>
+                <option value="general">general</option>
+                <option value="travel">travel</option>
+                <option value="music">music</option>
+            </select>
         </label>
-         <NewTodo onAdd={newTodo => setTodos([...todos, newTodo])} />
-            <ul>
-                {visibleTodos.map(todo => (
-                    <li key={todo.id}>
-                        {todo.completed ? <s>{todo.text}</s> : todo.text}
-                    </li>
-                ))}
-            </ul>
-            
-        </>
-    ) 
-}
-function NewTodo({onAdd}) {
-    const[text, setText] = useState('');
-    function handleAddClick() {
-        setText('');
-        onAdd(createTodo(text));
-    } 
-    return(
-        <>
-        <input value={text} onChange={e => setText(e.target.value)} />
-        <button onClick={handleAddClick}>
-            Add
+        <button onClick={() => setShow(!show)}>
+            {show ? 'Close chat' : 'Open chat' }
         </button>
+        {show && <hr/>}
+        {show && <ChatRoom roomId={roodId} />}
         </>
     );
 }
