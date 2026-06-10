@@ -1,28 +1,12 @@
-import { useState , useEffect} from "react";
-import { createConnection} from "./Chat.js";
-
- function ChatRoom({roomId}) {
-    const [serverUrl, setServerUrl] = useState('https://localhost:1234');
-    useEffect(() => {
-        const connection = createConnection(serverUrl, roomId);
-        connection.connect();
-        return () => connection.disconnect();
-
-    }, [roomId, serverUrl]);
-    return (
-        <>
-        <label>
-            Server URL:{''}
-            <input 
-             value={serverUrl}
-             onChange={e => setServerUrl(e.target.value)}/>
-        </label>
-        <h1>Welcome to the {roomId} Room!</h1>
-        </>
-    );
-}
+import { useState} from "react";
+import ChatRoom from './ChatRoom.js';
+import {
+  createEncryptedConnection,
+  createUnencryptedConnection,
+} from './chat.js';
 export default function App() {
     const[roodId, setRoomId] = useState('general');
+    const[isEncripted , setIsEncripted] = useState(false);
     return (
         <>
         <label>
@@ -35,8 +19,16 @@ export default function App() {
                 <option value="music">music</option>
             </select>
         </label>
+        <label>
+            <input type="checkbox"
+            checked={isEncripted}
+            onChange={e => setIsEncripted(e.target.checked)}/>
+            Enable encryption
+        </label>
         <hr/>
-        <ChatRoom roomId={roodId}/>
+        <ChatRoom roomId={roodId}
+        createConnection={isEncripted ? createEncryptedConnection : createUnencryptedConnection}
+        />
         </>
     );
 }
