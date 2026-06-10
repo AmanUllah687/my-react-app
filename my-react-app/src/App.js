@@ -1,34 +1,40 @@
-import { useState} from "react";
-import ChatRoom from './ChatRoom.js';
-import {
-  createEncryptedConnection,
-  createUnencryptedConnection,
-} from './chat.js';
-export default function App() {
-    const[roodId, setRoomId] = useState('general');
-    const[isEncripted , setIsEncripted] = useState(false);
+import { useSelectOptions } from './useSelectOptions.js';
+ export default function Page() {
+    const [
+        planetList,
+        planetId,
+        setPlanetId
+    ] = useSelectOptions('/planets');
+    const [
+        placeList,
+        placeId,
+        setPlaceId
+    ] = useSelectOptions(planetId ? `/planets/${planetId}/places` : null);
     return (
         <>
         <label>
-            choose the ChatRoom:{''}
-            <select 
-            value={roodId}
-            onChange={e => setRoomId(e.target.value)}>
-                <option value="general">general</option>
-                <option value="travel">travel</option>
-                <option value="music">music</option>
+            Pick a plannet:{''}
+            <select value={planetId} onChange={e => {setPlanetId(e.target.value)}}>
+                {planetList?.map(planet => 
+                 <option key={planet.id} value={planet.id}>
+                    {planet.name}
+                 </option>
+                )}
             </select>
         </label>
         <label>
-            <input type="checkbox"
-            checked={isEncripted}
-            onChange={e => setIsEncripted(e.target.checked)}/>
-            Enable encryption
+            Pick a Place:{''}
+            <select value={placeId} onChange={e => {setPlaceId(e.target.value)}}>
+                {placeList?.map(place => 
+                    <option key={place.id} value={place.id}>
+                        {place.name}
+                    </option>
+                )}
+            </select>
         </label>
-        <hr/>
-        <ChatRoom roomId={roodId}
-        createConnection={isEncripted ? createEncryptedConnection : createUnencryptedConnection}
-        />
+        <hr />
+        <p> You are going to: {placeId || '...'} on {planetId || '...'}</p>
         </>
     );
-}
+ }
+ 
