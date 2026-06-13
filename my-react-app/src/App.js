@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { useFormInput } from "./useFormInput";
 
-export default function StatusBar() {
-    const[isOnline, setIsOnline] = useState(true);
-    useEffect(() => {
-        function handleOnline() {
-            setIsOnline(true)
-        }
-        function handleOffline() {
-            setIsOnline(false)
-        }
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        }
-    },[])
-    return <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
+export default function Form() {
+    const firstNameProps = useFormInput('Marry');
+    const lastNameProps = useFormInput('poppins');
+    return (
+        <>
+        <label>
+            First Name :
+            <input {...firstNameProps}/>
+        </label>
+        <label>
+            Last Name : 
+            <input {...lastNameProps} />
+        </label>
+        <p><b>Good Morning, {firstNameProps.value} {lastNameProps.value}.</b></p>
+        </>
+    );
 }
  
