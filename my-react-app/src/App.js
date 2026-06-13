@@ -1,40 +1,21 @@
-import { useSelectOptions } from './useSelectOptions.js';
- export default function Page() {
-    const [
-        planetList,
-        planetId,
-        setPlanetId
-    ] = useSelectOptions('/planets');
-    const [
-        placeList,
-        placeId,
-        setPlaceId
-    ] = useSelectOptions(planetId ? `/planets/${planetId}/places` : null);
-    return (
-        <>
-        <label>
-            Pick a plannet:{''}
-            <select value={planetId} onChange={e => {setPlanetId(e.target.value)}}>
-                {planetList?.map(planet => 
-                 <option key={planet.id} value={planet.id}>
-                    {planet.name}
-                 </option>
-                )}
-            </select>
-        </label>
-        <label>
-            Pick a Place:{''}
-            <select value={placeId} onChange={e => {setPlaceId(e.target.value)}}>
-                {placeList?.map(place => 
-                    <option key={place.id} value={place.id}>
-                        {place.name}
-                    </option>
-                )}
-            </select>
-        </label>
-        <hr />
-        <p> You are going to: {placeId || '...'} on {planetId || '...'}</p>
-        </>
-    );
- }
+import { useState, useEffect } from "react";
+
+export default function StatusBar() {
+    const[isOnline, setIsOnline] = useState(true);
+    useEffect(() => {
+        function handleOnline() {
+            setIsOnline(true)
+        }
+        function handleOffline() {
+            setIsOnline(false)
+        }
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        }
+    },[])
+    return <h1>{isOnline ? '✅ Online' : '❌ Disconnected'}</h1>
+}
  
